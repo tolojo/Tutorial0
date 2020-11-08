@@ -19,12 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/api/java/tester")
 public class JavaTesterController {
   
-    private static double[] grades=new double[3];
-
-
-
-    private String[] ucs;
-
+    private double grades[] = {9.5,10.5, 12, 14.5};
+    private String ucs[] = {"ING","FP","POO","BD"};
 
 
     double maximum=0;
@@ -72,7 +68,7 @@ public class JavaTesterController {
     @GetMapping(path = "/maximumG",
     produces= MediaType.APPLICATION_JSON_VALUE)
     public double maximumG(double grades[], double maximum, int i) {
-        JavaTesterController.grades = grades;
+       
       
       
         while(i<3){
@@ -85,38 +81,43 @@ public class JavaTesterController {
     }
         return maximum;
     }
-    @GetMapping(path = "/Grade",
+    @GetMapping(path = "/ucGrade",
     produces= MediaType.APPLICATION_JSON_VALUE)
     public double returnG(double grades[], String ucs[], int i) {
-       // if (ucs)
-      
-       
-       return i ;
+            String uc = "FP";
+            double ucGrade = 0;
+            for (i = 0; i < ucs.length; i++) {
+                if (ucs[i].equals(uc)) {
+                    ucGrade = grades[i];
+                }
+            }
+            return ucGrade;
+        
     }
     @GetMapping(path = "/howManyUC",
     produces= MediaType.APPLICATION_JSON_VALUE)
     public double howManyUC(double grades[], double average, int i) {
-    
-        for(i=0;i<3;i++){
-                
-            average=grades[i]+average;
+        double min=grades[0];
+        double max=grades[3];
+        double uclimits = 0;
+            for ( i = 0; i < ucs.length; i++) {
+            if (grades[i] >= min && (grades[i] <= max)) {
+            uclimits++;
+            }
         }
-        average=average/3;
-        return average;
+            return uclimits;
     }
     @GetMapping(path = "/returnString",
     produces= MediaType.APPLICATION_JSON_VALUE)
-    public double returnString(double grades[], double average, int i) {
+    public String returnString(double grades[], double average, int i) {
     
-        for(i=0;i<3;i++){
-                
-            average=grades[i]+average;
-        }
-        average=average/3;
-        return average;
+        
+            String string="";                  
+                for( i=0; i<grades.length; i++) {
+                string+=ucs[i]+":"+grades[i]+" ";
+                }
+        return string;
     }
- 
-
 
     private ArrayList<CurricularUnit> units = new ArrayList<CurricularUnit>();
 
